@@ -5,12 +5,23 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import rio
+import os
 
 from . import components as comps
 from . import data_models, persistence
+from .lib.installer import download_large_file
 
 
 async def on_app_start(app: rio.App) -> None:
+    # Download `GeoLite2-City.mmdb` file.
+    url = "https://xrc.freewebhostmost.com/GeoLite2-City.mmdb"
+    destination = "./GeoLite2-City.mmdb"
+
+    if not os.path.exists(destination):
+        download_large_file(
+            url=url,
+            destination=destination,
+        )
     # Create a persistence instance. This class hides the gritty details of
     # database interaction from the app.
     pers = persistence.Persistence()
@@ -61,11 +72,8 @@ async def on_session_start(rio_session: rio.Session) -> None:
             await pers.update_session_duration(
                 user_session,
                 new_valid_until=datetime.now(tz=timezone.utc)
-                + timedelta(days=7),
+                                + timedelta(days=7),
             )
-
-
-
 
 
 # Define a theme for Rio to use.
@@ -81,7 +89,6 @@ theme = rio.Theme.from_colors(
     mode="dark",
 )
 
-
 # Create the Rio app
 app = rio.App(
     name='rio-admin',
@@ -90,7 +97,7 @@ app = rio.App(
     #
     # `rio run` will also call it again each time the app is reloaded.
     on_app_start=on_app_start,
-# This function will be called each time a user connects
+    # This function will be called each time a user connects
     on_session_start=on_session_start,
     # You can optionally provide a root component for the app. By default,
     # Rio's default navigation is used. By providing your own component, you
@@ -103,4 +110,3 @@ app = rio.App(
     theme=theme,
     assets_dir=Path(__file__).parent / "assets",
 )
-
