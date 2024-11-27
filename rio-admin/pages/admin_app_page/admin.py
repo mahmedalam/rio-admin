@@ -5,11 +5,44 @@ from pathlib import Path
 import rio
 
 from ...components import Dashboard
-from ...lib.px_to_rem import px_to_rem
-from ...constants.admin import *
-from ...styles.admin import *
-from ... import data_models
-from ... import persistence
+from ...utils import px_to_rem
+from ... import data_models, persistence
+
+SIDEBAR_BUTTONS = [
+    {
+        "name": "Dashboard",
+        "icon": "material/dashboard",
+    },
+    {
+        "name": "Users",
+        "icon": "material/person",
+    },
+    {
+        "name": "Database",
+        "icon": "material/database",
+    },
+    {
+        "name": "Storage",
+        "icon": "material/storage",
+    },
+    {
+        "name": "Settings",
+        "icon": "material/settings",
+    }
+]
+
+# Sidebar
+SIDEBAR_WIDTH = 200
+SIDEBAR_SPACING = 36
+SIDEBAR_MARGIN_X = 24
+SIDEBAR_MARGIN_Y = 32
+
+# Sidebar Logo
+SIDEBAR_LOGO_WIDTH = 170
+SIDEBAR_LOGO_HEIGHT = 40
+
+# Sidebar Buttons Container
+SIDEBAR_BUTTONS_CONTAINER_SPACING = 4
 
 
 def guard(event: rio.GuardEvent) -> str | None:
@@ -77,7 +110,7 @@ class AdminPage(rio.Component):
                         min_height=px_to_rem(SIDEBAR_LOGO_HEIGHT),
                     ),
                 ),
-                # Main Buttons Container
+                # Buttons Container
                 rio.Column(
                     *[
                         rio.Button(
@@ -93,27 +126,7 @@ class AdminPage(rio.Component):
                                 self.on_press_button, button_name=button["name"]
                             ),
                         )
-                        for button in SIDEBAR_MAIN_BUTTONS
-                    ],
-                    spacing=px_to_rem(SIDEBAR_BUTTONS_CONTAINER_SPACING),
-                ),
-                # Bottom Buttons Container
-                rio.Column(
-                    *[
-                        rio.Button(
-                            button["name"],
-                            icon=button["icon"],
-                            shape="rounded",
-                            style=(
-                                "plain-text"
-                                if button["name"] != self.active_tab
-                                else "major"
-                            ),
-                            on_press=functools.partial(
-                                self.on_press_button, button_name=button["name"]
-                            ),
-                        )
-                        for button in SIDEBAR_BOTTOM_BUTTONS
+                        for button in SIDEBAR_BUTTONS
                     ],
                     rio.Button(
                         "Logout",
@@ -123,7 +136,6 @@ class AdminPage(rio.Component):
                         on_press=self.on_logout,
                     ),
                     spacing=px_to_rem(SIDEBAR_BUTTONS_CONTAINER_SPACING),
-                    align_y=1,
                 ),
                 min_width=px_to_rem(SIDEBAR_WIDTH),
                 align_x=0,

@@ -1,11 +1,5 @@
 from __future__ import annotations
-
-import typing as t
-from dataclasses import KW_ONLY, field
-
 import rio
-
-from .. import components as comps
 from .. import data_models
 
 
@@ -35,4 +29,3 @@ class InnerAppPage(rio.Component):
         return rio.PageView(
             grow_y=True,
         )
-

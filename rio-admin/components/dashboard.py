@@ -1,10 +1,26 @@
+import random
 import rio
-from ..lib.px_to_rem import px_to_rem
-from ..styles.dashboard import *
-from ..lib.geoip2_with_flag import get_country_from_ip
+from ..utils import px_to_rem, get_country_from_ip
+
+# Container
+CONTAINER_SPACING = 32
+CONTAINER_MARGIN_Y = 32
+
+# Card
+CARD_SPACING = 12
+CARD_MARGIN_X = 24
+CARD_MARGIN_Y = 20
+
+# Card Icon
+CARD_ICON_SIZE = 52
 
 
 class Dashboard(rio.Component):
+    """
+    The Dashboard component is responsible for building a user interface that provides
+    a summary of the online users and their geographical distribution.
+    """
+
     def build(self) -> rio.Component:
         self.sessions = self.session._app_server.sessions
         self.users_count = len(self.sessions)
@@ -12,9 +28,9 @@ class Dashboard(rio.Component):
 
         for user in self.sessions:
             # For Test
-            # test_ips = ["103.209.79.0", "170.171.1.9", "103.177.248.0", "103.139.210.0"]
-            # ip = test_ips[random.randint(0, len(test_ips) - 1)]
-            ip = user.client_ip
+            test_ips = ["103.209.79.0", "170.171.1.9", "103.177.248.0", "103.139.210.0"]
+            ip = test_ips[random.randint(0, len(test_ips) - 1)]
+            # ip = user.client_ip
             response = get_country_from_ip(ip)
 
             if response is None:

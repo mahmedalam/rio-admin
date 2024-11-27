@@ -9,13 +9,16 @@ import os
 
 from . import components as comps
 from . import data_models, persistence
-from .lib.installer import download_large_file
+from .utils import download_large_file
 
 
 async def on_app_start(app: rio.App) -> None:
     # Download `GeoLite2-City.mmdb` file.
     url = "https://xrc.freewebhostmost.com/GeoLite2-City.mmdb"
-    destination = "./GeoLite2-City.mmdb"
+    destination = "./db/GeoLite2-City.mmdb"
+
+    if not os.path.exists("./db"):
+        os.mkdir("./db")
 
     if not os.path.exists(destination):
         download_large_file(
