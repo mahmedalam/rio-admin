@@ -2,7 +2,7 @@ import flag
 import geoip2.database
 
 # Path to the GeoLite2-City.mmdb file
-DATABASE_PATH = "GeoLite2-City.mmdb"
+DATABASE_PATH = "./db/GeoLite2-City.mmdb"
 
 
 def get_country_from_ip(ip_address) -> tuple[str, str, str] | None:
