@@ -4,7 +4,7 @@
 
 ## Features🧩
 
-- **Track Online Users With Countries**
+- **Track Online Users With Countries And Cities**
 
 ## Installation🛠️
 
